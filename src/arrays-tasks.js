@@ -639,16 +639,24 @@ function propagateItemsByPositionIndex(/* arr */) {
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
 function shiftArray(arr, n) {
-  let deletedElements = [];
   if (n > 0) {
-    deletedElements = arr.splice(-n, n);
-    arr.unshift(...deletedElements);
-  } else {
-    deletedElements = arr.splice(0, Math.abs(n));
-    arr.push(...deletedElements);
+    arr.unshift(...arr.splice(-n, n));
+  } else if (n < 0) {
+    arr.push(...arr.splice(0, Math.abs(n)));
   }
   return arr;
 }
+// function shiftArray(arr, n) {
+//   let deletedElements = [];
+//   if (n > 0) {
+//     deletedElements = arr.splice(-n, n);
+//     arr.unshift(...deletedElements);
+//   } else {
+//     deletedElements = arr.splice(0, Math.abs(n));
+//     arr.push(...deletedElements);
+//   }
+//   return arr;
+// }
 
 /**
  * Sorts digit names.
@@ -663,8 +671,29 @@ function shiftArray(arr, n) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+
+function sortDigitNamesByNumericOrder(arr) {
+  const numbers = new Map([
+    ['zero', 0],
+    ['one', 1],
+    ['two', 2],
+    ['three', 3],
+    ['four', 4],
+    ['five', 5],
+    ['six', 6],
+    ['seven', 7],
+    ['eight', 8],
+    ['nine', 9],
+  ]);
+
+  const reverseNumbers = new Map(
+    [...numbers.entries()].map(([key, value]) => [value, key])
+  );
+  if (arr.length === 0) return [];
+  return arr
+    .map((item) => numbers.get(item))
+    .sort((a, b) => a - b)
+    .map((item) => reverseNumbers.get(item));
 }
 
 /**
@@ -686,8 +715,17 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const midle = arr.length / 2;
+  if (arr.length % 2 === 0) {
+    arr.push(...arr.splice(0, midle));
+  } else {
+    const head = arr.splice(0, midle);
+    const tail = arr.splice(-midle, midle);
+    arr.unshift(...tail);
+    arr.push(...head);
+  }
+  return arr;
 }
 
 module.exports = {
