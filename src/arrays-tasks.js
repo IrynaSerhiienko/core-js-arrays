@@ -175,8 +175,9 @@ function isSameLength(arr) {
  *    isValueEqualsIndex([2, 1, 0, 4, 5]) => true
  *    isValueEqualsIndex([10, 20, 30, 40, 50]) => false
  */
-function isValueEqualsIndex(/* arr */) {
-  throw new Error('Not implemented');
+
+function isValueEqualsIndex(arr) {
+  return arr.some((item, index) => item === index);
 }
 
 /**
@@ -367,10 +368,30 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  const result = [];
+  arr.reduce((acc, item, index) => {
+    acc.push(item);
+    if ((index + 1) % chunkSize === 0) {
+      result.push([...acc]);
+      acc.length = 0;
+    }
+    return acc;
+  }, []);
+
+  if (arr.length % chunkSize !== 0) {
+    result.push([...arr.slice(result.length * chunkSize)]);
+  }
+  return result;
 }
 
+// function createChunks(arr, chunkSize) {
+//   const result = [];
+//   while (arr.length > 0) {
+//     result.push(arr.splice(0, chunkSize));
+//   }
+//   return result;
+// }
 /**
  * Generates an array of odd numbers of the specified length.
  *
